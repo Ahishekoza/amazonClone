@@ -1,15 +1,26 @@
-import { StyleSheet, TextInput, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { StyleSheet, TextInput, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TouchableOpacity,Alert } from 'react-native'
 import React, { useState } from 'react'
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline'
-
+import axios from 'axios'
 const LoginScreen = ({navigation}) => {
     const [showPassword, setPassword] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     })
-    const handleLogin = () => {
-        console.log(formData)
+    const handleLogin = async() => {
+
+        // const user ={
+        //     email:formData.email,
+        //     password: formData.password
+        // }
+        // console.log(user)
+        // await axios.post('http://localhost:8000/api/login', user).then((response)=>{
+        //     console.log(response.data.user);
+            
+        // }).catch((err) => {
+        //     console.log(err)
+        // })
     }
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>

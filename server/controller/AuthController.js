@@ -1,6 +1,7 @@
 import userModel from '../models/userModel.js'
 import crypto from 'crypto'
 import nodemailer from 'nodemailer'
+import jwtToken from 'jsonwebtoken'
 
 const sendVerificationToken = async (email, verificationToken) => {
 
@@ -22,7 +23,7 @@ const sendVerificationToken = async (email, verificationToken) => {
         from: 'amazona@gmail.com',
         to: email,
         subject: 'Email Verification',
-        text: `Please click the following link to verify your email : http://localhost:8000/verify/${verificationToken}`
+        text: `Please click the following link to verify your email : http://localhost:8000/api/verify/${verificationToken}`
     }
 
 
@@ -34,6 +35,25 @@ const sendVerificationToken = async (email, verificationToken) => {
     }
 }
 
+
+
+const jsonwebtoken = (user)=>{
+    const payload = {
+        id:user._id,
+        email:user.email,
+    }
+    const secret_key = 'rupali2906'
+    const option={
+        expiresIn : '1d'   
+    }
+
+    const token = jwtToken.sign(payload,secret_key,option)
+    return token
+    
+}
+
+
+// --Register
 export const registerUser = async (req, res) => {
 
     try {
@@ -58,6 +78,10 @@ export const registerUser = async (req, res) => {
 
         // send the verification token to the users email address
         sendVerificationToken(newUser.email, newUser.verificationToken)
+        res.status(201).json({
+            message:
+                "Registration successful. Please check your email for verification.",
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -69,7 +93,7 @@ export const registerUser = async (req, res) => {
 
 }
 
-
+// --VerficationToken
 export const verifyToken = async (req, res) => {
 
     const token = req.params.token
@@ -85,11 +109,82 @@ export const verifyToken = async (req, res) => {
     user.verificationToken = undefined
 
 
-    await user.save()
+    await user.save({new: true})
 
 
     res.status(200).json({
         message: 'Email verified successfully'
     })
 
+}
+
+// --Login
+export const login = async(req, res) => {
+    const {email,password}=req.body
+
+    // check if user is present 
+    const user = await userModel.findOne({email: email})
+    if(!user){
+        return res.status(404).json({
+            message:'User Not Found'
+        })
+    }
+
+    if(user.password!==password){
+        return res.status(404).json({
+            message:'Invalid Incorrect'
+        })
+    }
+    
+    const token = jsonwebtoken(user)
+
+
+    const sendUser = {
+        name: user.name,
+        email: user.email,
+        token: token
+    }
+
+
+    res.status(201).json({
+        message:'Successfully Logined',
+        user:sendUser,
+    })
+
+}
+
+
+// -- add address to the user address array
+export const addAddress =async(req,res)=>{
+    const {userId,address} = req.body
+
+    const user = await userModel.findById({_id: userId})
+    if(!user){
+        return res.status(404).json({
+            message: 'User not found'
+        })
+    }
+
+    user.address.push(address)
+
+    await user.save()
+
+    res.status(200).json({
+        message:'Address created successfully'
+    })
+}
+
+// get all addresses
+export const getAllAddress = async()=>{
+    const {userId} = req.params
+
+    await userModel.findById({_id: userId}).then((response)=>{
+        res.status(200).json({
+            address : response.address
+        })
+    }).catch((err)=>{
+        res.status(500).json({
+            message:`Error: ${err.message}`
+        })
+    })
 }

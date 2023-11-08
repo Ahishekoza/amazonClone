@@ -1,7 +1,7 @@
-import { StyleSheet, TextInput, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { StyleSheet, TextInput, Text, View, SafeAreaView, Image, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon, UserIcon } from 'react-native-heroicons/outline'
-
+import axios from 'axios'
 const RegisterScreen = ({ navigation }) => {
   const [showPassword, setPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -9,8 +9,31 @@ const RegisterScreen = ({ navigation }) => {
     email: '',
     password: ''
   })
-  const handleLogin = () => {
-    console.log(formData)
+  const handleRegister = async() => {
+    const user = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    // send a POST  request to the backend API to register the user
+    axios
+      .post("http://localhost:8000/api/register", user)
+      .then((response) => {
+        console.log(response);
+        Alert.alert(
+          "Registration successful",
+          "You have been registered Successfully"
+        );
+        
+      })
+      .catch((error) => {
+        Alert.alert(
+          "Registration Error",
+          "An error occurred while registering"
+        );
+        console.log("registration failed", error);
+      });
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
@@ -66,7 +89,7 @@ const RegisterScreen = ({ navigation }) => {
             marginRight: 'auto',
             padding: 15,
             borderRadius: 6
-          }} onPress={handleLogin}>
+          }} onPress={handleRegister}>
             <Text style={{ textAlign: 'center', color: 'white', fontSize: 16, fontWeight: 'bold' }}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>

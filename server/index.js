@@ -6,8 +6,8 @@ import AuthRouter from './routes/AuthRouter.js'
 const app = express()
 
 app.use(cors())
-app.use(morgan('dev'))
 app.use(express.json())
+app.use(morgan('dev'))
 
 mongoose.connect('mongodb+srv://abhishekoza11:Rupali2906@cluster0.pvpl7be.mongodb.net/')
 .then(()=>{

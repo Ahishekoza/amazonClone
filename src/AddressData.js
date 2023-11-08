@@ -1,0 +1,41 @@
+export const addresses = [
+    {
+        name: 'Abhishek Oza',
+        mobileNo: '7841838287',
+        houseNo: '24/1',
+        street: '82/b',
+        landmark: 'Aranyeshwar Temple',
+        city: 'Pune',
+        country: 'India',
+        postalCode: '411009',
+    },
+    {
+        name: 'Saniya Oza',
+        mobileNo: '7841838287',
+        houseNo: '24/1',
+        street: '82/b',
+        landmark: 'Aranyeshwar Temple',
+        city: 'Pune',
+        country: 'India',
+        postalCode: '411009',
+    },
+    {
+        name: 'Somesh Oza',
+        mobileNo: '7841838287',
+        houseNo: '24/1',
+        street: '82/b',
+        landmark: 'Aranyeshwar Temple',
+        city: 'Pune',
+        country: 'India',
+        postalCode: '411009',
+    },{
+        name: 'Simran Oza',
+        mobileNo: '7841838287',
+        houseNo: '24/1',
+        street: '82/b',
+        landmark: 'Aranyeshwar Temple',
+        city: 'Pune',
+        country: 'India',
+        postalCode: '411009',
+    }
+]

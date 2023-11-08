@@ -6,8 +6,25 @@ This component will automatically adjust its height, position, or bottom padding
 
 Pressable : - 
 As same behavior as Touchableopacity
-
-
+Platform :-
+ImageBackground is same as background-image in attribute in css
 
 nodemailer is use to send the email
 first you need to create a transporter and then you need to create a mail options and then you need to send the email
+
+we also have a bottomTabNavigator present in react naviagtion
+
+
+use :  numsColumns instead of flexWrap in Flatlist to divide the list as per requirement
+
+
+
+createSlice from Redux toolkit 
+
+
+
+Packages used : 
+react-native-dropdown-picker
+react-native-heroicons
+react-native-image-slider-box
+react-native-modals
