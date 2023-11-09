@@ -4,9 +4,9 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const user = {
-    id: '125536263',
-    name: 'abhishek',
-    email: 'abhishekoza11@gmail.com',
+    id: '12',
+    name: '',
+    email: '',
   };
 
   return <AuthContext.Provider value={{user}}>{children}</AuthContext.Provider>;

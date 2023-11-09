@@ -7,12 +7,14 @@ import ProductCard from '../components/ProductCard';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Header from '../components/Header';
 import { BottomModal, SlideAnimation, ModalContent } from "react-native-modals";
-import { useAuth } from '../context/AuthContext';
 import { addresses } from '../AddressData';
+import { useDispatch, useSelector } from 'react-redux';
+import { addressforDelivery } from '../reducer/CartReducer';
 
 const HomeScreen = ({ navigation }) => {
 
-  const { user } = useAuth()
+  const deliveryAddress = useSelector((state)=> state.cart.deliveryAddress)
+  const dispatch =  useDispatch()
   const list = [
     {
       id: "0",
@@ -193,7 +195,6 @@ const HomeScreen = ({ navigation }) => {
     { label: "women's clothing", value: "women's clothing" },
   ]);
 
-  const [selectedAddress, setSelectedAdress] = useState({})
   const onGenderOpen = useCallback(() => {
     setCompanyOpen(false);
   }, []);
@@ -215,11 +216,14 @@ const HomeScreen = ({ navigation }) => {
     setModalVisible(!modalVisible)
     navigation.navigate('AddAddress')
   }
+  //  Now we will use this address to display on the confirmation screen as we have selected a default address
+  const handleDeliveryAddress = (item) => {
+    dispatch(addressforDelivery(item))
+  }
   useEffect(() => {
 
     getAllProducts()
   }, [])
-
   return (
     <>
       <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 0 : 0, flex: 1, backgroundColor: "white" }}>
@@ -231,7 +235,7 @@ const HomeScreen = ({ navigation }) => {
             <MapPinIcon size={24} color={'black'} />
             <Pressable onPress={() => setModalVisible(!modalVisible)}>
               {
-                selectedAddress?.name  ? <Text>Deliver to {selectedAddress.name} - {selectedAddress?.city} {selectedAddress?.postalCode}</Text>:
+                deliveryAddress?.name  ? <Text>Deliver to {deliveryAddress.name} - {deliveryAddress?.city} {deliveryAddress?.postalCode}</Text>:
                 <Text style={{ fontSize: 16, fontWeight: '600' }}>Add a address</Text>
               }
             </Pressable>
@@ -354,7 +358,7 @@ const HomeScreen = ({ navigation }) => {
             {addresses?.map((item, index) => (
               <Pressable
               key={index}
-                onPress={() => setSelectedAdress(item)}
+                onPress={()=>handleDeliveryAddress(item)}
                 style={{
                   width: 140,
                   height: 140,
@@ -366,7 +370,7 @@ const HomeScreen = ({ navigation }) => {
                   gap: 3,
                   marginRight: 15,
                   marginTop: 10,
-                  backgroundColor: selectedAddress === item ? "#FBCEB1" : "white"
+                  backgroundColor: deliveryAddress?.name === item.name ? "#FBCEB1" : "white"
                 }}
               >
                 <View

@@ -19,12 +19,24 @@ import { ModalPortal } from 'react-native-modals';
 import store from './store';
 import AddressScreen from './src/screens/AddressScreen';
 import AddAddressScreen from './src/screens/AddAddressScreen';
+import CartScreen from './src/screens/CartScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import { View } from 'react-native';
+import { Text } from 'react-native-svg';
+import {useSelector} from 'react-redux'
+import ConfirmationScreen from './src/screens/ConfirmationScreen';
+import OrderScreen from './src/screens/OrderScreen';
 
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
 const BottomTabs = () => {
+
+  const cart = useSelector((state)=> state.cart.cart)
+  // console.log(cart.length)
+  
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -45,7 +57,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name='Profile'
-        component={HomeScreen}
+        component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
           tabBarLabelStyle: { color: '#008597' },
@@ -61,14 +73,19 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name='Cart'
-        component={HomeScreen}
+        component={CartScreen}
         options={{
           tabBarLabel: 'Cart',
           tabBarLabelStyle: { color: '#008597' },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <ShoppingCartIcon size={24} color="#008E97" />
+             <View style={{position:'relative'}}>
+              {/* <View style={{position:'absolute',width:10,height:10,borderRadius:5,backgroundColor:'red',right:0,top:-2}}>
+                <Text >{cart.length}</Text>
+              </View> */}
+               <ShoppingCartIcon size={24} color="#008E97" />
+             </View>
             ) : (
               <ShoppingCartIcon size={24} color="black" />
             ),
@@ -81,6 +98,8 @@ const BottomTabs = () => {
 
 function App() {
   return (
+    // store here is the the store we created which have the value of cartReducer as cart  so we will use use
+    // useSelector  to fetch the value of state and useDispatch to make any changes in the state
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Main' screenOptions={{ headerShown: false }}>
@@ -90,6 +109,8 @@ function App() {
           <Stack.Screen name='ProductDetails' component={ProductDetailScreen} />
           <Stack.Screen name='AddAddress' component={AddAddressScreen}/>
           <Stack.Screen name='Address' component={AddressScreen} />
+          <Stack.Screen name='Confirmation' component={ConfirmationScreen}/>
+          <Stack.Screen name='Order' component={OrderScreen}/>
         </Stack.Navigator>
         <ModalPortal />
       </NavigationContainer>

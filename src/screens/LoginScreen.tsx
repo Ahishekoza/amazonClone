@@ -2,14 +2,19 @@ import { StyleSheet, TextInput, Text, View, SafeAreaView, Image, KeyboardAvoidin
 import React, { useState } from 'react'
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline'
 import axios from 'axios'
+import { useAuth } from '../context/AuthContext'
 const LoginScreen = ({navigation}) => {
     const [showPassword, setPassword] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     })
-    const handleLogin = async() => {
 
+    const {user} =  useAuth()
+    const handleLogin = async() => {
+        user.name = 'abhishek',
+        user.email = formData.email
+        navigation.goBack()
         // const user ={
         //     email:formData.email,
         //     password: formData.password

@@ -4,24 +4,27 @@ import Header from '../components/Header'
 import { ShareIcon,HeartIcon,MapPinIcon } from 'react-native-heroicons/outline'
 import {useDispatch,useSelector} from 'react-redux'
 import { addToCart } from '../reducer/CartReducer'
+import { Modal, ModalContent } from 'react-native-modals';
 
-const ProductDetailScreen = ({ route }) => {
+const ProductDetailScreen = ({ route ,navigation }) => {
     const { item } = route.params
     const { width } = Dimensions.get('window')
     const height = (width * 100) / 100
     
     const [like,setLike] = useState()
+    const [modalVisible,setModelVisible] = useState(false)
     
     
     const dispatch = useDispatch()
     const handleAddToCart=(item)=>{
+        setModelVisible(true)
         dispatch(addToCart(item))
     }
 
     const cart = useSelector((state)=> state.cart.cart)
 
-    console.log(cart)
     return (
+        <>
         <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
             {/* Header */}
             <Header />
@@ -103,6 +106,18 @@ const ProductDetailScreen = ({ route }) => {
             </Pressable>
 
         </ScrollView>
+        
+        <Modal visible={modalVisible} onTouchOutside={()=>setModelVisible(!modalVisible)}>
+            <ModalContent>
+                <View style={{height:100,width:200,justifyContent:'center',alignItems:'center'}}>
+                    <Text style={{fontSize:20}}>Item added in the Cart </Text>
+                    <Text style={{fontSize:16, color:'red',marginTop:5}}>Happy Shopping !</Text>
+                </View>
+                {/* TODO you can add the button if you want to close modal like that */}
+            </ModalContent>
+        </Modal>
+        
+        </>
     )
 }
 

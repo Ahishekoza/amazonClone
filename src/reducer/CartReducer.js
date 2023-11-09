@@ -4,10 +4,13 @@ import {createSlice} from '@reduxjs/toolkit'
 const cartSlice = createSlice({
     name: 'cart',
     initialState:{
-        cart:[]
+        cart:[],
+        deliveryAddress:null,
+        orderedFood:[]
     },
     reducers:{
         addToCart:(state,action)=>{
+            //  action.payload have the value of item added to the cart  state is the state we initalized above 
             const itemPresent = state.cart.find(item=> item.id === action.payload.id)
             if(itemPresent){
                 itemPresent.quantity++
@@ -34,11 +37,22 @@ const cartSlice = createSlice({
             else{
                 itemPresent.quantity -- 
             }
+        },
+        clearCart:(state, action)=>{
+            state.cart=[]
+        },
+        addressforDelivery :(state,action)=>{
+            state.deliveryAddress = action.payload
+        },
+        foodOrdered:(state,action)=>{
+            console.log(state.orderedFood)
+            state.orderedFood = action.payload
         }
+        
     }
 })
 
 
-export const {addToCart,removeFromCart,incrementCart,decrementCart} = cartSlice.actions
+export const {addToCart,removeFromCart,incrementCart,decrementCart,addressforDelivery,foodOrdered,clearCart} = cartSlice.actions
 
 export default cartSlice.reducer
